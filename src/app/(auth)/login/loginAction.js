@@ -1,4 +1,7 @@
+"use server";
+
 import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 export async function loginAction(prevSate, formData) {
   const supabase = await createClient();
@@ -13,5 +16,8 @@ export async function loginAction(prevSate, formData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
+    return { error: error.message };
   }
+
+  redirect("/");
 }

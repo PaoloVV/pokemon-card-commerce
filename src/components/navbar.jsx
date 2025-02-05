@@ -78,7 +78,7 @@ export default function Navbar({ isLogged, user }) {
             <FaShoppingCart color="purple" />
           </Link>
         )}
-        {!isLogged ? (
+        {!isLogged && (
           <Link
             href="/"
             className="flex items-center gap-1 hover:scale-110 font-semibold"
@@ -86,12 +86,13 @@ export default function Navbar({ isLogged, user }) {
             <div>Accedi</div>
             <FaPowerOff color="red" />
           </Link>
-        ) : (
+        )}
+        {user && isLogged && (
           <Link
             href="/"
-            className="flex items-center gap-1 hover:scale-110 font-semibold"
+            className="flex items-center gap-1 hover:underline font-semibold"
           >
-            <div>Benvenuto, </div>
+            <div>Benvenuto, {user.email}</div>
             <FaPowerOff color="red" />
           </Link>
         )}

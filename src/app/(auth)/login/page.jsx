@@ -1,12 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import { loginAction } from "./loginAction";
+import { useActionState } from "react";
 
-const initialSate = {
+const initialState = {
   message: "",
 };
 
 export default function Login() {
-  const [state, formAction] = useActionState(loginAction, initialSate);
+  const [state, formAction] = useActionState(loginAction, initialState);
   return (
     <div className="px-8 py-6 bg-white rounded-md max-w-md md:min-w-96 flex flex-col items-center">
       <h1 className="font-bold text-center text-4xl">Accedi</h1>
@@ -65,6 +68,7 @@ export default function Login() {
           >
             Accedi
           </button>
+          <div className="text-red-700">{state.error}</div>
         </div>
       </form>
     </div>
