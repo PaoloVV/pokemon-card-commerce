@@ -9,9 +9,11 @@ import { PiHeartHalfFill } from "react-icons/pi";
 import { TbCardsFilled } from "react-icons/tb";
 import { FaPowerOff } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
+import UserMenu from "./userMenu";
 
 export default function Navbar({ isLogged, user }) {
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
   console.log(user);
 
   return (
@@ -69,7 +71,7 @@ export default function Navbar({ isLogged, user }) {
           <div>Elenco Carte</div>
           <TbCardsFilled color="green" />
         </Link>
-        {isLogged && (
+        {/* {isLogged && (
           <Link
             href="/"
             className="flex items-center gap-1 hover:scale-110 font-semibold"
@@ -77,7 +79,7 @@ export default function Navbar({ isLogged, user }) {
             <div>Carrello</div>
             <FaShoppingCart color="purple" />
           </Link>
-        )}
+        )} */}
         {!isLogged && (
           <Link
             href="/"
@@ -91,11 +93,13 @@ export default function Navbar({ isLogged, user }) {
           <Link
             href="/"
             className="flex items-center gap-1 hover:underline font-semibold"
+            onClick={() => setOpenMenu(!openMenu)}
           >
             <div>Benvenuto, {user.email}</div>
             <FaPowerOff color="red" />
           </Link>
         )}
+        {openMenu && <UserMenu user={user} />}
       </div>
     </div>
   );
