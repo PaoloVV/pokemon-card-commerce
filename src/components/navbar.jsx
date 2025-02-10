@@ -42,7 +42,7 @@ export default function Navbar({ isLogged, user }) {
         <div className="absolute z-40 w-screen h-screen bg-white text-red-700 font-bold top-0 left-0 flex flex-col items-center justify-center gap-10 text-4xl">
           <Link href="/">Home</Link>
           <Link href="/">Preferite</Link>
-          <Link href="/">Elenco Carte</Link>
+          <Link href="/elenco">Elenco Carte</Link>
           <Link href="/">Carrello</Link>
           <Link href="/">LoginLogout</Link>
         </div>
@@ -65,7 +65,7 @@ export default function Navbar({ isLogged, user }) {
           <PiHeartHalfFill color="blue" />
         </Link>
         <Link
-          href="/"
+          href="/elenco"
           className="flex items-center gap-1 hover:scale-110 font-semibold"
         >
           <div>Elenco Carte</div>
