@@ -19,7 +19,7 @@ export const metadata = {
   description: "Compra le carte Pokemon che ti mancano!!",
 };
 
-export default async function RootLayout({ children }) {
+export default async function DashboardLayout({ children }) {
   const supabase = await createClient();
 
   const { data } = await supabase.auth.getUser();

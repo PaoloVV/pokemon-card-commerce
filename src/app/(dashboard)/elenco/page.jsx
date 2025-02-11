@@ -5,12 +5,21 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { FaHeart } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa6";
+import { useFavorites } from "@/hook/useFavorites";
+import { createClient } from "@/utils/supabase/client";
+import Card from "@/components/card";
 
 export default function Elenco() {
-  const [espansioni, setEspansioni] = useState(null);
   const [preferito, setPreferito] = useState({});
+  const supabase = createClient();
+  //CARICAMENTO DATI
+  const [carte, setCarte] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  //FAVORITI
+  const [user, setUser] = useState(null);
+  const { favorites, addFavorite, removeFavorite } = useFavorites();
+
   const handlePreferito = (id) => {
     setPreferito((prevState) => ({
       ...prevState,
@@ -23,13 +32,14 @@ export default function Elenco() {
       "X-Api_key": apiKey,
     },
   };
-
+  // RECUPERO DATI
   useEffect(() => {
     const getData = async () => {
       await axios
         .get(`https://api.pokemontcg.io/v2/cards?q=set.id:sv3pt5`, config)
+
         .then((res) => {
-          setEspansioni(res.data.data);
+          setCarte(res.data.data.sort((a, b) => a.number - b.number));
         })
         .catch((error) => setError(error))
         .finally(() => {
@@ -39,6 +49,16 @@ export default function Elenco() {
     getData();
   }, []);
 
+  //recupero user
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+  }, []);
   return (
     <div className="flex flex-col items-center">
       <main>
@@ -49,36 +69,49 @@ export default function Elenco() {
 
         {loading && <div>Loading...</div>}
         {!loading && error && <div>{error}</div>}
-        {!loading && !error && espansioni && (
+        {!loading && !error && carte && (
           <div className="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4">
-            {espansioni.map((espansione) => (
-              <div
-                className="text-black flex flex-col mb-2 gap-2 p-1 rounded-lg items-center cursor-pointer hover:scale-105 hover:border hover:border-gray-400"
-                key={espansione.id}
-              >
-                <h3 className="text-lg font-semibold">
-                  {espansione.name} - {espansione.number}
-                </h3>
-                <Image
-                  src={espansione.images.small}
-                  alt=""
-                  height={1}
-                  width={100}
-                  style={{ width: "auto" }}
-                />
-                <div className="flex flex-col-reverse items-center justify-between gap-1 mb-1">
-                  <button className="border border-black rounded-md p-1">
-                    Aggiungi al Carrello
-                  </button>
-                  <button onClick={() => handlePreferito(espansione.id)}>
-                    {preferito[espansione.id] ? (
-                      <FaHeart color="red" />
-                    ) : (
-                      <FaRegHeart color="red" />
-                    )}
-                  </button>
-                </div>
-              </div>
+            {carte.map((carta) => (
+              <Card key={carta.id} carta={carta} />
+              //   <div
+              //     className="text-black flex flex-col mb-2 gap-2 p-1 rounded-lg items-center cursor-pointer hover:scale-105 hover:border hover:border-gray-400"
+              //     key={carta.id}
+              //   >
+              //     <h3 className="text-lg font-semibold">
+              //       {carta.name} - {carta.number}
+              //     </h3>
+              //     <Image
+              //       src={carta.images.small}
+              //       alt=""
+              //       height={1}
+              //       width={100}
+              //       style={{ width: "auto" }}
+              //     />
+              //     <div className="flex flex-col-reverse items-center justify-between gap-1 mb-1">
+              //       {/* <button className="border border-black rounded-md p-1">
+              //         Aggiungi al Carrello
+              //       </button>
+              //       <button onClick={() => handlePreferito(carta.id)}>
+              //         {preferito[carta.id] ? (
+              //           <FaHeart
+              //             color="red"
+              //             onClick={async () => {
+              //               await addFavorite(carta.id);
+              //               console.log(favorites);
+              //             }}
+              //           />
+              //         ) : (
+              //           <FaRegHeart
+              //             color="red"
+              //             onClick={async () => {
+              //               await addFavorite(carta);
+              //               console.log(favorites);
+              //             }}
+              //           />
+              //         )}
+              //       </button> */}
+              //     </div>
+              //   </div>
             ))}
           </div>
         )}

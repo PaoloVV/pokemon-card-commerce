@@ -58,7 +58,7 @@ export default function Navbar({ isLogged, user }) {
           <TbPokeball color="red" />
         </Link>
         <Link
-          href="/"
+          href="/favorites"
           className="flex items-center gap-1 hover:scale-110 font-semibold"
         >
           <div>Preferite</div>
