@@ -50,15 +50,15 @@ export default function Elenco() {
   }, []);
 
   //recupero user
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-    };
-    getUser();
-  }, []);
+  //   useEffect(() => {
+  //     const getUser = async () => {
+  //       const {
+  //         data: { user },
+  //       } = await supabase.auth.getUser();
+  //       setUser(user);
+  //     };
+  //     getUser();
+  //   }, []);
   return (
     <div className="flex flex-col items-center">
       <main>

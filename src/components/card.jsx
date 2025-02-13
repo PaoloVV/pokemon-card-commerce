@@ -1,3 +1,5 @@
+"use client";
+
 import { toggleFavorite } from "@/store/favoritesSlice";
 import { useSession } from "@supabase/auth-helpers-react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -29,7 +31,11 @@ export default function Card({ carta }) {
         width={100}
         style={{ width: "auto" }}
       />
-      <button onClick={handleToggleFavorite}>
+      <button
+        onClick={() => {
+          console.log(session);
+        }}
+      >
         {isFavorite ? <FaHeart /> : <FaRegHeart />}
       </button>
     </div>
